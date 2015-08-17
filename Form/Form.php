@@ -23,6 +23,11 @@ class Form extends Element
     const SETTER_PREFIX = 'set';
 
     /**
+     * @var string
+     */
+    const GETTER_PREFIX = 'get';
+
+    /**
      * The config tree
      *
      * @var \Fewlines\Core\Xml\Tree\Element|null
@@ -669,5 +674,43 @@ class Form extends Element
      */
     public function renderAll() {
         return $this->render($this->getElements());
+    }
+
+    /**
+     * @param string $name
+     * @param array  $args
+     * @return *
+     */
+    public function __call($name, $args) {
+        /**
+         * Getting elements added
+         * with the name of the function
+         * called (multiple elements will
+         * be collected if the user called
+         * the function without any name ->
+         * only get())
+         */
+
+        if (preg_match('/^' . self::GETTER_PREFIX . '(.*)$/', $name)) {
+            $name = strtolower(preg_replace('/^' . self::GETTER_PREFIX . '(.*)$/', '$1', $name));
+
+            if (empty($name) && ! empty($args)) {
+                $result = array();
+
+                foreach ($args as $argName) {
+                    if ( ! is_string($argName)) {
+                        continue;
+                    }
+
+                    $result[] = $this->getElementByName($argName);
+                }
+            }
+            else {
+                $result = null;
+                $result = $this->getElementByName($name);
+            }
+
+            return $result;
+        }
     }
 }
