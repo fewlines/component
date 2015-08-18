@@ -25,7 +25,7 @@ class Form extends Element
     /**
      * @var string
      */
-    const GETTER_PREFIX = 'get';
+    const GETTER_PREFIX_ELEMENT = 'getElement';
 
     /**
      * The config tree
@@ -691,8 +691,8 @@ class Form extends Element
          * only get())
          */
 
-        if (preg_match('/^' . self::GETTER_PREFIX . '(.*)$/', $name)) {
-            $name = strtolower(preg_replace('/^' . self::GETTER_PREFIX . '(.*)$/', '$1', $name));
+        if (preg_match('/^' . self::GETTER_PREFIX_ELEMENT . '(.*)$/', $name)) {
+            $name = strtolower(preg_replace('/^' . self::GETTER_PREFIX_ELEMENT . '(.*)$/', '$1', $name));
 
             if (empty($name) && ! empty($args)) {
                 $result = array();
