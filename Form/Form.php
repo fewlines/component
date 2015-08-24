@@ -692,7 +692,9 @@ class Form extends Element
          */
 
         if (preg_match('/^' . self::GETTER_PREFIX_ELEMENT . '(.*)$/', $name)) {
-            $name = strtolower(preg_replace('/^' . self::GETTER_PREFIX_ELEMENT . '(.*)$/', '$1', $name));
+            $name = preg_replace('/^' . self::GETTER_PREFIX_ELEMENT . '(.*)$/', '$1', $name);
+            $name = preg_replace('/([a-zA-Z])(?=[A-Z])/', '$1-', $name);
+            $name = strtolower($name);
 
             if (empty($name) && ! empty($args)) {
                 $result = array();
