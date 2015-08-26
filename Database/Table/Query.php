@@ -39,6 +39,7 @@ class Query extends \Fewlines\Component\Database\Query
 
 		$this->queryString  = self::CREATE;
 		$this->queryString .= self::TABLE;
+		$this->queryString .= self::IF_NOT_EXISTS;
 		$this->queryString .= self::quoteString($name);
 
 		$columnString = '';

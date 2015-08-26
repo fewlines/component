@@ -110,6 +110,11 @@ class Query
 	const COLLATE = " COLLATE ";
 
 	/**
+	 * @var string
+	 */
+	const IF_NOT_EXISTS = " IF NOT EXISTS ";
+
+	/**
 	 * Tells if the query is valid
 	 *
 	 * @var boolean

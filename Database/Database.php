@@ -15,6 +15,14 @@ class Database
 	const REAL_ESCAPE = true;
 
 	/**
+	 * The default charset to
+	 * set to the database connection
+	 *
+	 * @var string
+	 */
+	const LINK_CHARSET = 'utf8';
+
+	/**
 	 * The link of the database connection
 	 *
 	 * @var \Fewlines\Component\Database\Link
@@ -38,8 +46,9 @@ class Database
 	 * @param string $user
 	 * @param string $password
 	 * @param string $database
+	 * @param string $charset
 	 */
-	public function __construct($host = "default", $user = "", $password = "", $database = "")
+	public function __construct($host = "default", $user = "", $password = "", $database = "", $charset = "")
 	{
 		$defaultPort = ini_get("mysqli.default_port");
 
@@ -55,7 +64,10 @@ class Database
 			$password = $dbCfg->getChildByName('password')->getContent();
 			$database = $dbCfg->getChildByName('database')->getContent();
 			$port     = $dbCfg->getChildByName('port');
+			$charset  = $dbCfg->getChildByName('charset');
+
 			$port     = false == $port ? $defaultPort : $port->getContent();
+			$charset  = false == $charset ? self::LINK_CHARSET : $charset->getContent();
 		}
 		else
 		{
@@ -63,10 +75,15 @@ class Database
 			$port = end(split(":", $host));
 			$port = $port != $host ? $port : $defaultPort;
 			$host = $port != $host ? reset(split(":", $host)) : $host;
+
+			$charset = empty($charset) ? self::LINK_CHARSET : $charset;
 		}
 
 		// Create link for connection
 		$this->link = new Link($host, $user, $password, $database, $port);
+
+		// Set charset for the conenction
+		$this->link->set_charset($charset);
 	}
 
 	/**
