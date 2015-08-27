@@ -115,6 +115,21 @@ class Query
 	const IF_NOT_EXISTS = " IF NOT EXISTS ";
 
 	/**
+	 * @var string
+	 */
+	const ORDER_BY = " ORDER BY %s %s";
+
+	/**
+	 * @var string
+	 */
+	const SORTING_ASC = " ASC ";
+
+	/**
+	 * @var string
+	 */
+	const SORTING_DESC = " DESC ";
+
+	/**
 	 * Tells if the query is valid
 	 *
 	 * @var boolean

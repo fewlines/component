@@ -42,6 +42,14 @@ class Select
 	private $limit = array();
 
 	/**
+	 * The order for the
+	 * query
+	 *
+	 * @var array
+	 */
+	private $orderBy = array();
+
+	/**
 	 * Values to handle updates and inserts
 	 *
 	 * @var array
@@ -144,6 +152,19 @@ class Select
 	public function limit($start, $count)
 	{
 		$this->limit = array($start, $count);
+		return $this;
+	}
+
+	/**
+	 * Set the order by clause
+	 *
+	 * @param  string $column
+	 * @param  string $sorting
+	 * @return self
+	 */
+	public function orderBy($column, $sorting = 'asc')
+	{
+		$this->orderBy = array($column, $sorting);
 		return $this;
 	}
 
@@ -356,7 +377,8 @@ class Select
 			  ->setTable($this->table)
 			  ->setColumn($this->column)
 			  ->setWhere($this->where)
-			  ->setLimit($this->limit);
+			  ->setLimit($this->limit)
+			  ->setOrderBy($this->orderBy);
 
 		$query = $query->build();
 		$this->checkQuery($query);

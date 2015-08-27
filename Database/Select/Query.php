@@ -19,6 +19,13 @@ class Query extends \Fewlines\Component\Database\Query
 	private $limit = array();
 
 	/**
+	 * Order of the result
+	 *
+	 * @var array
+	 */
+	private $oderBy = array();
+
+	/**
 	 * Values for update and insert
 	 * function
 	 *
@@ -47,6 +54,16 @@ class Query extends \Fewlines\Component\Database\Query
 	public function setLimit($limit)
 	{
 		$this->limit = $limit;
+		return $this;
+	}
+
+	/**
+	 * Set the order by statement
+	 *
+	 * @param array $orderBy
+	 */
+	public function setOrderBy($orderBy) {
+		$this->orderBy = $orderBy;
 		return $this;
 	}
 
@@ -172,6 +189,19 @@ class Query extends \Fewlines\Component\Database\Query
 
 		// Append where conditions (if given)
 		$this->appendWhere();
+
+		// Append order by
+		if(false == empty($this->orderBy))
+		{
+			$sorting = self::SORTING_ASC;
+
+			if(array_key_exists(1, $this->orderBy) && strtolower($this->orderBy[1]) == 'desc')
+			{
+				$sorting = self::SORTING_DESC;
+			}
+
+			$this->queryString .= sprintf(self::ORDER_BY, $this->orderBy[0], $this->orderBy[1]);
+		}
 
 		// Append limit (if given)
 		if(false == empty($this->limit))
