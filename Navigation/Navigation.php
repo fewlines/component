@@ -24,6 +24,11 @@ class Navigation extends DomElement
 	const LABEL_CTAG = 'label';
 
 	/**
+	 * @var string
+	 */
+	const CLASS_CTAG =  'class';
+
+	/**
 	 * Holds the pages of
 	 * the navigation
 	 *
@@ -64,6 +69,7 @@ class Navigation extends DomElement
 	 * @return Page
 	 */
 	public function getPageByConfig($config) {
+		$class = $config->getChildByName(self::CLASS_CTAG, false, false);
 		$pages = $config->getChildByName(self::SUBPAGES_CTAG, false, false);
 		$label = $config->getChildByName(self::LABEL_CTAG, false, false);
 		$url = $config->getChildByName(self::URL_CTAG, false, false);
@@ -85,6 +91,31 @@ class Navigation extends DomElement
 		}
 		else if ($label) {
 			$page->addChild($page->getLabel());
+		}
+
+		if ($class) {
+			$target = $class->getAttribute('target');
+			$element = $page;
+
+			if ($target) {
+				$target = strtolower($target);
+
+				switch ($target) {
+					case self::A_TAG:
+						if ($page->getUrl()) {
+							$element = $page->getUrl();
+						}
+						break;
+
+					case self::SPAN_TAG:
+						if ($page->getLabel()) {
+							$element = $page->getLabel();
+						}
+						break;
+				}
+			}
+
+			$element->addAttribute(self::CLASS_CTAG, (string)$class);
 		}
 
 		if ($pages) {
