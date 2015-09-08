@@ -114,7 +114,7 @@ class Validation
         $validator = $this->createValidatorByOption($option);
 
         if ($validator != false) {
-            $this->validators[$validator->getType() ] = $validator;
+            $this->validators[$validator->getType()] = $validator;
         }
 
         $this->options[] = $option;
