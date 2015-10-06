@@ -45,7 +45,7 @@ class Crypt
      * @return string
      */
     private static function getKey() {
-        return defined(SECURITY_KEY) ? SECURITY_KEY : self::KEY;
+        return defined('SECURITY_KEY') ? SECURITY_KEY : self::KEY;
     }
 
     /**
@@ -64,7 +64,7 @@ class Crypt
      * @return string
      */
     public static function encrypt($str) {
-        $key = pack('H*', self::getKey());
+        $key = rtrim(base64_encode(pack('H*', sprintf('%u', CRC32(self::getKey())))));
         $iv = mcrypt_create_iv(self::getIvSize(), MCRYPT_RAND);
         $secretTxt = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key, $str, MCRYPT_MODE_CBC, $iv);
 
@@ -76,7 +76,7 @@ class Crypt
      *
      * @param  string $str
      * @return string
-     * @throws Exception\InvalidStringToDecryptException IF str is crpyted
+     * @throws Exception\InvalidStringToDecryptException IF str is not crpyted
      */
     public static function decrypt($str) {
         if (false == self::isCrypted($str)) {
@@ -85,7 +85,9 @@ class Crypt
 			");
         }
 
-        $key = pack('H*', self::getKey());
+        $parts = explode(";", $str);
+        $str = $parts[0];
+        $key = rtrim(base64_encode(pack('H*', sprintf('%u', CRC32(self::getKey())))));
         $ivSize = self::getIvSize();
         $secretTxt = base64_decode($str);
         $ivDec = substr($secretTxt, 0, $ivSize);
