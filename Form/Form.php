@@ -169,7 +169,13 @@ class Form extends Element
     public function validate($ctx = array(), $mergeCtx = false) {
         foreach ($this->elements as $element) {
             if ($element->hasValidation()) {
-                $this->result->addError($element->getName(), $element->validate($this->getElementValue($element, $ctx, $mergeCtx))->getResult());
+                $this->result->addError(
+                    $element->getName(),
+                    $element->validate(
+                        $this->getElementValue($element, $ctx, $mergeCtx),
+                        $this->getRelatedContents($element, $ctx, $mergeCtx)
+                    )->getResult()
+                );
             }
         }
 
@@ -215,6 +221,25 @@ class Form extends Element
      */
     public function getElementByName($name) {
         return $this->getElementsByName($name, false);
+    }
+
+    /**
+     * @param \Fewlines\Component\Form\Element\Element $element
+     * @param  array   $ctx
+     * @param  boolean $mergeCtx
+     * @return array
+     */
+    public function getRelatedContents($element, $ctx = array(), $mergeCtx = false) {
+        $related = array();
+        $names = $element->getRelatedElementNames();
+
+        foreach ($names as $type => $name) {
+            $related[$type] = $this->getElementValue(
+                $this->getElementByName($name), $ctx, $mergeCtx
+            );
+        }
+
+        return $related;
     }
 
     /**

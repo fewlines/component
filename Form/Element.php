@@ -224,13 +224,36 @@ abstract class Element extends \Fewlines\Core\Dom\Element
 	}
 
 	/**
-	 * @param  string|array|number $value
+	 * Gets the the names of the related elements
+	 * to use for further validation steps
+	 *
 	 * @return array
 	 */
-	public function validate($value)
+	public function getRelatedElementNames()
+	{
+		$names = array();
+
+		// Find related names in the relation validators
+		if (true == $this->hasValidation()) {
+			$validators = $this->validation->getValidatorsByInstance(__NAMESPACE__ . '\Validation\Validator\Relation');
+
+			foreach ($validators as $type => $validator) {
+				$names[$type] = $validator->getContent();
+			}
+		}
+
+		return $names;
+	}
+
+	/**
+	 * @param string|array|number $value
+	 * @param array $related
+	 * @return array
+	 */
+	public function validate($value, $related = array())
 	{
 		if(true == $this->hasValidation()) {
-			return $this->validation->validate($value, $this);
+			return $this->validation->validate($value, $this, $related);
 		}
 
 		return array();

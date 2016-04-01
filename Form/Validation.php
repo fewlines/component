@@ -191,6 +191,22 @@ class Validation
     }
 
     /**
+     * @param string $class
+     * @return array
+     */
+    public function getValidatorsByInstance($class) {
+        $validators = array();
+
+        foreach ($this->validators as $type => $validator) {
+            if ($validator instanceof $class) {
+                $validators[$type] = $validator;
+            }
+        }
+
+        return $validators;
+    }
+
+    /**
      * @param  string $type
      * @return boolean|Option
      */
@@ -221,10 +237,15 @@ class Validation
     /**
      * @param  string $value
      * @param  \Fewlines\Component\Form\Element $element
+     * @param  array $related
      * @return \Fewlines\Component\Form\Validation
      */
-    public function validate($value, $element = null) {
+    public function validate($value, $element = null, $related = array()) {
         foreach ($this->validators as $type => $validator) {
+            if ($validator instanceof Validation\Validator\Relation && array_key_exists($type, $related)) {
+                $validator->setRelated($related[$type]);
+            }
+
             $this->result->addResult($type, $validator->validate($value));
         }
 
