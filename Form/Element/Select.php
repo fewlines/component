@@ -80,9 +80,12 @@ class Select extends \Fewlines\Component\Form\Element
 		// Set option as attributes for the dom element
 		// to render
 		$option->setAttributes(array(
-				'value'    => $value,
-				'selected' => $selected
-			));
+			'value' => $value
+		));
+
+		if ($option->isSelected()) {
+			$option->addAttribute('selected', '');
+		}
 
 		return $option;
 	}
