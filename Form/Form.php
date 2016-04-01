@@ -234,9 +234,15 @@ class Form extends Element
         $names = $element->getRelatedElementNames();
 
         foreach ($names as $type => $name) {
-            $related[$type] = $this->getElementValue(
-                $this->getElementByName($name), $ctx, $mergeCtx
-            );
+            $element = $this->getElementByName($name);
+
+            if (!$element) {
+                throw new Exception\InvalidRelationElementException(
+                    'Can\'t find element with the name "' . $name . '"'
+                );
+            }
+
+            $related[$type] = $this->getElementValue($element, $ctx, $mergeCtx);
         }
 
         return $related;
