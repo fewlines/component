@@ -49,6 +49,31 @@ class Crypt
     }
 
     /**
+     * Converts the key to a valid length (16, 24, 32)
+     *
+     * @param string $key
+     * @return string
+     */
+    private static function convertKey($key) {
+        if(strlen($key) < 32) {
+            $sizes = array(16, 24, 32);
+
+            // Loop through sizes and pad the key
+            foreach($sizes as $s){
+                while(strlen($key) < $s) {
+                    $key = $key . "\0";
+                }
+
+                if(strlen($key) >= $s) {
+                    break;
+                }
+            }
+        }
+
+        return $key;
+    }
+
+    /**
      * Returns the iv size
      *
      * @return integer
@@ -64,7 +89,7 @@ class Crypt
      * @return string
      */
     public static function encrypt($str) {
-        $key = rtrim(base64_encode(pack('H*', sprintf('%u', CRC32(self::getKey())))));
+        $key = self::convertKey(rtrim(base64_encode(pack('H*', sprintf('%u', CRC32(self::getKey()))))));
         $iv = mcrypt_create_iv(self::getIvSize(), MCRYPT_RAND);
         $secretTxt = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key, $str, MCRYPT_MODE_CBC, $iv);
 
@@ -87,7 +112,7 @@ class Crypt
 
         $parts = explode(";", $str);
         $str = $parts[0];
-        $key = rtrim(base64_encode(pack('H*', sprintf('%u', CRC32(self::getKey())))));
+        $key = self::convertKey(rtrim(base64_encode(pack('H*', sprintf('%u', CRC32(self::getKey()))))));
         $ivSize = self::getIvSize();
         $secretTxt = base64_decode($str);
         $ivDec = substr($secretTxt, 0, $ivSize);
