@@ -177,7 +177,31 @@ class Database
 		{
 			throw new Exception\SelectResultInvalidException("
 				There is something wrong with the result of
-				your query.
+				your query. \n
+				Error: " . $this->getError() . ".
+				Query: " . $query . ".
+			");
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Execute a multi query
+	 *
+	 * @param  string $query
+	 * @return \mysqli_result
+     * @throws Exception\SelectResultInvalidException IF result is false
+	 */
+	public function multiQuery($query)
+	{
+		$result = $this->link->multi_query($query);
+
+		if(false == $result)
+		{
+			throw new Exception\SelectResultInvalidException("
+				There is something wrong with the result of
+				your query. \n
 				Error: " . $this->getError() . ".
 				Query: " . $query . ".
 			");
