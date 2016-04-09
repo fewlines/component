@@ -273,7 +273,15 @@ class Form extends Element
 
         $name = $element->getName();
 
-        return array_key_exists($name, $content) ? $content[$name] : '';
+        // Check if element is typeof file
+        $fileClass = '\\' . __NAMESPACE__ . '\Element\Input\File';
+
+        if ($element instanceof  $fileClass) {
+            return array_key_exists($name, $_FILES) ? $_FILES[$name] : '';
+        }
+        else {
+            return array_key_exists($name, $content) ? $content[$name] : '';
+        }
     }
 
     /**
