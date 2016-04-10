@@ -285,6 +285,39 @@ class Form extends Element
     }
 
     /**
+     * @return string
+     */
+    public function getValidationJson() {
+        $validations = array();
+
+        for ($i = 0, $len = count($this->elements); $i < $len; $i++) {
+            if ($this->elements[$i]->hasValidation()) {
+                $validation = $this->elements[$i]->getValidation();
+                $options = $validation->getOptions();
+                $errors = $validation->getErrors();
+                $valArray = array(
+                    'options' => array(),
+                    'errors' => array()
+                );
+
+                // Get options
+                for ($ii = 0, $len1 = count($options); $ii < $len1; $ii++) {
+                    $valArray['options'][$options[$ii]->getType()] = $options[$ii]->getValue();
+                }
+
+                // Get errors
+                for ($ii = 0, $len1 = count($errors); $ii < $len1; $ii++) {
+                    $valArray['errors'][$errors[$ii]->getType()] = $errors[$ii]->getMessage();
+                }
+
+                $validations[$this->elements[$i]->getName()] = $valArray;
+            }
+        }
+
+        return htmlspecialchars(json_encode($validations), ENT_QUOTES, $this->acceptCharset);
+    }
+
+    /**
      * @return array
      */
     public function getData() {

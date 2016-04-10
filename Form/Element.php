@@ -214,6 +214,14 @@ abstract class Element extends \Fewlines\Core\Dom\Element
 	}
 
 	/**
+	 * @return Validation
+	 */
+	public function getValidation()
+	{
+		return $this->validation;
+	}
+
+	/**
 	 * Checks if validation is given
 	 *
 	 * @return boolean
@@ -221,6 +229,14 @@ abstract class Element extends \Fewlines\Core\Dom\Element
 	public function hasValidation()
 	{
 		return is_null($this->validation) === false;
+	}
+
+	/**
+	 * Removes the validation
+	 */
+	public function removeValidation()
+	{
+		$this->validation = null;
 	}
 
 	/**

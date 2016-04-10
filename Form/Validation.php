@@ -38,7 +38,6 @@ class Validation
      * @param array|XmlElement $defaultErrors
      */
     public function __construct($errors = array(), $options = array(), $defaultErrors = array()) {
-
         /**
          * Use xml object to set the errors
          * Otherwise use an array (Manually)
@@ -156,13 +155,6 @@ class Validation
     }
 
     /**
-     * @return array
-     */
-    public function getErrors() {
-        return $this->errors;
-    }
-
-    /**
      * @param  string $type
      * @return boolean
      */
@@ -257,5 +249,19 @@ class Validation
      */
     public function getResult() {
         return $this->result->getResult();
+    }
+
+    /**
+     * @return array
+     */
+    public function getErrors() {
+        return $this->errors;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOptions() {
+        return $this->options;
     }
 }
