@@ -4,6 +4,7 @@ namespace Fewlines\Component\Navigation;
 
 use Fewlines\Core\Dom\Element as DomElement;
 use Fewlines\Core\Dom\Dom as DomHelper;
+use Fewlines\Core\Http\Router;
 
 class Page extends DomElement
 {
@@ -49,6 +50,16 @@ class Page extends DomElement
      */
     public function getUrl() {
         return $this->url;
+    }
+
+    /**
+     * Determines if this page is currently active.
+     * This checks the url
+     *
+     * @return boolean
+     */
+    public function isActive() {
+        return Router::getInstance()->getRequest()->getUrl() == $this->url->getAttribute('href');
     }
 
     /**

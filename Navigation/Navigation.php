@@ -129,6 +129,10 @@ class Navigation extends DomElement
 			}
 		}
 
+		if ($page->isActive()) {
+			$page->addAttribute('class', 'active ' . $page->getAttribute('class'));
+		}
+
 		return $page;
 	}
 
