@@ -224,6 +224,35 @@ class Form extends Element
     }
 
     /**
+     * @param  string $name
+     * @return boolean
+     */
+    public function hasElement($name) {
+        foreach ($this->elements as $element) {
+            if ($element->getName() == $name) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param  string $name
+     * @return boolean
+     */
+    public function removeElement($name) {
+        for ($i = 0, $len = count($this->elements); $i < $len; $i++) {
+            if ($this->elements[$i]->getName() == $name) {
+                array_splice($this->elements, $i, 1);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * @param \Fewlines\Component\Form\Element\Element $element
      * @param  array   $ctx
      * @param  boolean $mergeCtx
