@@ -21,6 +21,14 @@ class Result
     private $errors = array();
 
     /**
+     * Some data the user can
+     * append to the result
+     *
+     * @var array
+     */
+    private $data = array();
+
+    /**
      * @return boolean
      */
     public function isSuccess() {
@@ -45,13 +53,29 @@ class Result
     }
 
     /**
+     * Adds data to the result
+     *
+     * @param string $name
+     * @param * $value
+     */
+    public function addData($name, $value) {
+        $this->data[$name] = $value;
+    }
+
+    /**
      * Converts all necessary result
      * innformations to a json string
      *
      * @return string
      */
     public function toJSON() {
-        return json_encode(array('success' => $this->success, 'errors' => $this->errors));
+        return json_encode(
+            array(
+                'success' => $this->success,
+                'errors' => $this->errors,
+                'data' => $this->data
+            )
+        );
     }
 
     /**

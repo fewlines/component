@@ -211,6 +211,16 @@ class Database
 	}
 
 	/**
+	 * Gets the last inserted id
+	 *
+	 * @return integer
+	 */
+	public function getLastInsertId()
+	{
+		return $this->link->insert_id;
+	}
+
+	/**
 	 * Prepare a query
 	 *
 	 * @param  string $query
