@@ -18,6 +18,16 @@ class Page extends DomElement
 	 */
 	private $url;
 
+    /**
+     * @var DomElement
+     */
+    private $parent;
+
+    /**
+     * @var boolean
+     */
+    private $active = false;
+
 	public function __construct() {
 		self::setDomTag(self::LI_TAG);
 		self::setDomStr(self::LI_STR);
@@ -49,7 +59,33 @@ class Page extends DomElement
      * @return DomElement
      */
     public function getUrl() {
+        if ($this->url && $this->url->hasAttribute('href')) {
+            $this->active = Router::getInstance()->getRequest()->getUrl() == $this->url->getAttribute('href');
+        }
+
         return $this->url;
+    }
+
+    /**
+     * Sets the parent page
+     *
+     * @param DomElement $parent
+     */
+    public function setParent($parent) {
+        $this->parent = $parent;
+
+        if ($this->isActive()) {
+            $parent->setActive(true);
+        }
+    }
+
+    /**
+     * Gets the parent page
+     *
+     * @return DomElement
+     */
+    public function getParent() {
+        return $this->parent;
     }
 
     /**
@@ -59,7 +95,14 @@ class Page extends DomElement
      * @return boolean
      */
     public function isActive() {
-        return Router::getInstance()->getRequest()->getUrl() == $this->url->getAttribute('href');
+        return $this->active;
+    }
+
+    /**
+     * @param booelan $active
+     */
+    public function setActive($active) {
+        $this->active = $active;
     }
 
     /**

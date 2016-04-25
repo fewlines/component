@@ -121,9 +121,11 @@ class Navigation extends DomElement
 		if ($pages) {
 			foreach ($pages->getChildren() as $subpage) {
 				$wrapper = new Page;
+				$subPage = $this->getPageByConfig($subpage);
 				$wrapper->setDomTag(self::UL_TAG);
 				$wrapper->setDomStr(self::UL_STR);
-				$wrapper->addChild($this->getPageByConfig($subpage));
+				$wrapper->addChild($subPage);
+				$subPage->setParent($page);
 
 				$page->addChild($wrapper);
 			}
