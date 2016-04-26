@@ -14,6 +14,6 @@ class Maxsize extends \Fewlines\Component\Form\Validation\Validator
             }
         }
 
-        return false;
+        return true;
     }
 }

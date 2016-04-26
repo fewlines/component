@@ -18,8 +18,10 @@ class Extension extends \Fewlines\Component\Form\Validation\Validator
                     return true;
                 }
             }
+
+            return false;
         }
 
-        return false;
+        return true;
     }
 }

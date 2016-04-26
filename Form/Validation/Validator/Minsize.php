@@ -12,8 +12,10 @@ class Minsize extends \Fewlines\Component\Form\Validation\Validator
             if (array_key_exists('size', $value)) {
                 return (intval($value['size']) / 1000) >= intval($this->content);
             }
+
+            return false;
         }
 
-        return false;
+        return true;
     }
 }
